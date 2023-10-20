@@ -1,17 +1,17 @@
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../pipedrive-logo.svg";
+import AddEmployeeModal from "./AddEmployeeModal";
 
-const Navigation = ({ modalRef }) => {
+export default function Navigation() {
   const location = useLocation();
-  const openModal = () => {
-    if (modalRef && modalRef.current) {
-      modalRef.current.showModal();
-    }
-  };
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <Navbar expand="md" className="bg-body-tertiary">
@@ -31,14 +31,18 @@ const Navigation = ({ modalRef }) => {
           </Nav>
           {/* Only render Add Employee button on Employees site */}
           {location.pathname === "/" && (
-            <Button className="add-employee-button" onClick={() => openModal()}>
+            <Button className="add-employee-button" onClick={handleShow}>
               + Employee
             </Button>
           )}
         </Navbar.Collapse>
+
+        <AddEmployeeModal
+          show={show}
+          handleClose={handleClose}
+          handleShow={handleShow}
+        />
       </Container>
     </Navbar>
   );
-};
-
-export default Navigation;
+}

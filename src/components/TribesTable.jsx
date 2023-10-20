@@ -10,12 +10,12 @@ const tribes = [
   {
     id: 2,
     name: "Billing",
-    department: "Product Platform",
+    department: "Gears",
   },
   {
     id: 3,
     name: "Gear",
-    department: "Product Platform",
+    department: "Billing",
   },
 ];
 

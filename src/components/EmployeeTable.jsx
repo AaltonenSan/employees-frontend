@@ -1,8 +1,6 @@
-import { forwardRef } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Table from "react-bootstrap/Table";
-import AddEmployeeModal from "./AddEmployeeModal";
 
 const employees = [
   {
@@ -49,10 +47,9 @@ const employees = [
   },
 ];
 
-const EmployeeTable = forwardRef((modalRef) => {
+export default function EmployeeTable() {
   return (
     <Container className="mt-3">
-      <AddEmployeeModal ref={modalRef} />
       <Table hover>
         <thead>
           <tr>
@@ -83,6 +80,4 @@ const EmployeeTable = forwardRef((modalRef) => {
       </Table>
     </Container>
   );
-});
-
-export default EmployeeTable;
+}
