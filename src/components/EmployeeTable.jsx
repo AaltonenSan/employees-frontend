@@ -1,56 +1,10 @@
-import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Table from "react-bootstrap/Table";
 
-const employeesList = [
-  {
-    id: 1,
-    name: "John Doe",
-    position: "Software Engineer",
-    tribe: "InternStelar",
-    startDate: "2023-01-15",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    position: "Accountant",
-    tribe: "Billing",
-    startDate: "2023-04-25",
-  },
-  {
-    id: 3,
-    name: "Bob Johnson",
-    position: "Project Manager",
-    tribe: "Gears",
-    startDate: "2022-04-01",
-  },
-  {
-    id: 4,
-    name: "Alice Brown",
-    position: "Marketing Specialist",
-    tribe: "InternStelar",
-    startDate: "2022-03-15",
-  },
-  {
-    id: 5,
-    name: "David Wilson",
-    position: "Accountant",
-    tribe: "Billing",
-    startDate: "2022-05-12",
-  },
-  {
-    id: 6,
-    name: "Michael Lee",
-    position: "Intern",
-    tribe: "InternStelar",
-    startDate: "2023-06-22",
-  },
-];
 
 
-export default function EmployeeTable() {
-  const[employees, setEmployees] = useState(employeesList);
+export default function EmployeeTable({employees, setEmployees}) {
 
   function handleDelete(id){
     setEmployees(employees.filter(x => x.id !== id));
@@ -89,3 +43,4 @@ export default function EmployeeTable() {
     </Container>
   );
 }
+
