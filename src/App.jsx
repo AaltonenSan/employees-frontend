@@ -4,7 +4,6 @@ import EmployeeTable from "./components/EmployeeTable";
 import Navigation from "./components/Navigation";
 import TribesTable from "./components/TribesTable";
 
-
 const employeesList = [
   {
     id: 1,
@@ -50,22 +49,19 @@ const employeesList = [
   },
 ];
 
-
-
 function App() {
   const [employees, setEmployees] = useState(employeesList);
 
-  const addEmployee = (newEmployee) => {
-    const newId = employees.length + 1;
-    newEmployee.id = newId;
-    setEmployees([...employees, newEmployee]);
-  };
-
   return (
     <BrowserRouter>
-      <Navigation />
+      <Navigation employees={employees} setEmployees={setEmployees} />
       <Routes>
-        <Route path="/" element={<EmployeeTable employees= {employees} setEmployees={setEmployees} />} />
+        <Route
+          path="/"
+          element={
+            <EmployeeTable employees={employees} setEmployees={setEmployees} />
+          }
+        />
         <Route path="/tribes" element={<TribesTable />} />
       </Routes>
     </BrowserRouter>
@@ -73,4 +69,3 @@ function App() {
 }
 
 export default App;
-

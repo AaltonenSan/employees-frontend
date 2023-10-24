@@ -2,12 +2,9 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Table from "react-bootstrap/Table";
 
-
-
-export default function EmployeeTable({employees, setEmployees}) {
-
-  function handleDelete(id){
-    setEmployees(employees.filter(x => x.id !== id));
+export default function EmployeeTable({ employees, setEmployees }) {
+  function handleDelete(id) {
+    setEmployees(employees.filter((x) => x.id !== id));
   }
 
   return (
@@ -32,7 +29,11 @@ export default function EmployeeTable({employees, setEmployees}) {
               <td>{employee.tribe}</td>
               <td>{employee.startDate}</td>
               <td>
-                <Button className="delete-button" size="sm" onClick={()=>handleDelete(employee.id) }>
+                <Button
+                  className="delete-button"
+                  size="sm"
+                  onClick={() => handleDelete(employee.id)}
+                >
                   Delete
                 </Button>
               </td>
@@ -43,4 +44,3 @@ export default function EmployeeTable({employees, setEmployees}) {
     </Container>
   );
 }
-
