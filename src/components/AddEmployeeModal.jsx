@@ -45,8 +45,7 @@ export default function AddEmployeeModal({
 
       if (!values.startDate) {
         errors.startDate = "Enter the start date";
-      }
-      if (today < startDate) {
+      } else if (today < startDate) {
         errors.startDate = "Start date cannot be in the future";
       }
 
