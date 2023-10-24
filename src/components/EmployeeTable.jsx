@@ -1,8 +1,9 @@
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Table from "react-bootstrap/Table";
 
-const employees = [
+const employeesList = [
   {
     id: 1,
     name: "John Doe",
@@ -47,7 +48,14 @@ const employees = [
   },
 ];
 
+
 export default function EmployeeTable() {
+  const[employees, setEmployees] = useState(employeesList);
+
+  function handleDelete(id){
+    setEmployees(employees.filter(x => x.id !== id));
+  }
+
   return (
     <Container className="mt-3">
       <Table hover>
@@ -70,7 +78,7 @@ export default function EmployeeTable() {
               <td>{employee.tribe}</td>
               <td>{employee.startDate}</td>
               <td>
-                <Button className="delete-button" size="sm">
+                <Button className="delete-button" size="sm" onClick={()=>handleDelete(employee.id) }>
                   Delete
                 </Button>
               </td>

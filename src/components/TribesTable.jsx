@@ -43,3 +43,5 @@ export default function TribesTable() {
     </Container>
   );
 }
+
+export { tribes };

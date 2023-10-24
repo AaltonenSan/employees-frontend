@@ -39,6 +39,16 @@ a:hover::after {
   position: relative;
 }
 
+tr > td > .btn{
+  visibility: hidden;
+
+}
+
+tr:hover > td > .btn{
+  visibility: visible;
+}
+
+
 .delete-button {
   background-color: #6861F2;
   outline: none;
