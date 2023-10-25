@@ -3,7 +3,9 @@ import { FloatingLabel, FormGroup } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import { tribes } from "./TribesTable";
+// import { tribes } from "./TribesTable";
+import { useEffect, useState } from 'react';
+import { instance } from "../index";
 
 function ErrorMessage({ error }) {
   return <div className="form-error-message">{error}</div>;
@@ -15,21 +17,39 @@ export default function AddEmployeeModal({
   employees,
   setEmployees,
 }) {
-  const currentDate = new Date().toISOString().split("T")[0];
+
+  // so we could get tribes for the dropdown in form
+  const [tribes, setTribes] = useState([]);
+
+  async function fetchData() {
+    try {
+      const response = await instance.get('/tribes')
+      setTribes(response.data);
+    } catch (error) {
+        console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  },[]);
+
+  //validation starts here
+  //const currentDate = new Date().toISOString().split("T")[0];
 
   const formik = useFormik({
     initialValues: {
       name: "",
       position: "",
-      tribe: tribes[0].name,
-      startDate: "",
+      tribe: null,
+      //startDate: "",
     },
     validateOnChange: false,
     validateOnBlur: true,
     validate: (values) => {
       const errors = {};
-      const today = new Date();
-      const startDate = new Date(values.startDate);
+      //const today = new Date();
+      //const startDate = new Date(values.startDate);
 
       if (!values.name) {
         errors.name = "Name of the employee is needed";
@@ -43,23 +63,27 @@ export default function AddEmployeeModal({
         errors.position = "Position must consist only letters";
       }
 
-      if (!values.startDate) {
+      if(!values.tribe){
+        errors.tribe = "Please select tribe";
+      }
+
+      /*if (!values.startDate) {
         errors.startDate = "Enter the start date";
       } else if (today < startDate) {
         errors.startDate = "Start date cannot be in the future";
-      }
+      }*/
 
       return errors;
     },
     onSubmit: async (values, { resetForm }) => {
       try {
         const newEmployee = {
-          id: employees.length + 1,
           name: values.name,
-          position: values.position,
-          tribe: values.tribe,
-          startDate: values.startDate,
+          title: values.position,
+          tribe_id: values.tribe,
+          //startDate: values.startDate,
         };
+        await instance.post('/employees', newEmployee)
         setEmployees([...employees, newEmployee]);
         resetForm();
         handleClose();
@@ -108,14 +132,16 @@ export default function AddEmployeeModal({
                 value={formik.values.tribe}
                 name="tribe"
               >
+                <option disabled selected value="">Choose Tribe</option>
                 {tribes.map((tribe) => (
-                  <option key={tribe.id} value={tribe.name}>
+                  <option key={tribe.id} value={tribe.id}>
                     {tribe.name}
                   </option>
                 ))}
               </Form.Select>
+              <ErrorMessage error={formik.errors.tribe} />
             </FloatingLabel>
-            <FloatingLabel
+            {/**<FloatingLabel
               controlId="floatingDate"
               label="Start date"
               className="mb-3"
@@ -128,7 +154,7 @@ export default function AddEmployeeModal({
                 onChange={formik.handleChange}
               />
               <ErrorMessage error={formik.errors.startDate} />
-            </FloatingLabel>
+                </FloatingLabel>*/}
           </FormGroup>
           <div className="row justify-content-around">
             <Button className="delete-button col-5" onClick={handleClose}>

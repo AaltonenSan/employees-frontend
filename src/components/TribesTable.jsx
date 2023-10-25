@@ -1,25 +1,30 @@
+import { useEffect, useState } from 'react';
 import Container from "react-bootstrap/Container";
+import Row from 'react-bootstrap/Row';
+import Spinner from 'react-bootstrap/Spinner';
 import Table from "react-bootstrap/Table";
-
-const tribes = [
-  {
-    id: 1,
-    name: "InternStelar",
-    department: "Other Engineering",
-  },
-  {
-    id: 2,
-    name: "Billing",
-    department: "Gears",
-  },
-  {
-    id: 3,
-    name: "Gear",
-    department: "Billing",
-  },
-];
+import { instance } from "../index";
 
 export default function TribesTable() {
+  const [tribes, setTribes] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function fetchData() {
+    setIsLoading(true);
+    try {
+      const response = await instance.get('/tribes')
+      setTribes(response.data);
+    } catch (error) {
+        console.error(error)
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  },[]);
+
   return (
     <Container className="mt-3">
       <Table hover>
@@ -31,7 +36,8 @@ export default function TribesTable() {
           </tr>
         </thead>
         <tbody>
-          {tribes.map((tribe) => (
+          {!isLoading && 
+          tribes.map((tribe) => (
             <tr key={tribe.id}>
               <td>{tribe.id}</td>
               <td>{tribe.name}</td>
@@ -40,8 +46,13 @@ export default function TribesTable() {
           ))}
         </tbody>
       </Table>
+      {isLoading && (
+        <Row className="justify-content-center">
+          <Spinner />
+        </Row>
+      )}
     </Container>
   );
 }
 
-export { tribes };
+

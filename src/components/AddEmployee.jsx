@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import AddEmployeeModal from "./AddEmployeeModal";
 
-export default function AddEmployee({ employees, setEmployees }) {
+export default function AddEmployee() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -15,8 +15,6 @@ export default function AddEmployee({ employees, setEmployees }) {
       <AddEmployeeModal
         show={show}
         handleClose={handleClose}
-        employees={employees}
-        setEmployees={setEmployees}
       />
     </>
   );

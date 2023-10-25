@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../pipedrive-logo.svg";
 import AddEmployee from "./AddEmployee";
 
-export default function Navigation({ employees, setEmployees }) {
+export default function Navigation() {
   const location = useLocation();
 
   return (
@@ -26,7 +26,7 @@ export default function Navigation({ employees, setEmployees }) {
           </Nav>
           {/* Only render Add Employee button on Employees site */}
           {location.pathname === "/" && (
-            <AddEmployee employees={employees} setEmployees={setEmployees} />
+            <AddEmployee />
           )}
         </Navbar.Collapse>
       </Container>
