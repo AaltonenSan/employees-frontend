@@ -1,26 +1,14 @@
 import Modal from "react-bootstrap/Modal";
-// import { tribes } from "./TribesTable";
+import { useDispatch, useSelector } from "react-redux";
+import { closeModal } from "../store/actions/modal";
 import AddEmployeeForm from "./AddEmployeeForm";
 
-export default function AddEmployeeModal({
-  show,
-  handleClose,
-  employees,
-  setEmployees,
-  updateEmployee,
-  setUpdateEmployee,
-}) {
-  //validation starts here
-  //const currentDate = new Date().toISOString().split("T")[0];
+export default function AddEmployeeModal() {
+  const dispatch = useDispatch();
+  const show = useSelector((state) => state.modal.show);
   return (
-    <Modal show={show} onHide={handleClose}>
-      <AddEmployeeForm
-        employees={employees}
-        setEmployees={setEmployees}
-        handleClose={handleClose}
-        updateEmployee={updateEmployee}
-        setUpdateEmployee={setUpdateEmployee}
-      />
+    <Modal show={show} onHide={() => dispatch(closeModal())}>
+      <AddEmployeeForm />
     </Modal>
   );
 }

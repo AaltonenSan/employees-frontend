@@ -3,19 +3,20 @@ import { useEffect, useState } from "react";
 import { FloatingLabel, FormGroup } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { useDispatch, useSelector } from "react-redux";
 import { instance } from "../index";
+import { addNewEmployee, updateEmployeeId } from "../store/actions/employees";
+import { closeModal } from "../store/actions/modal";
 
 function ValidationErrorMessage({ error }) {
   return <div className="form-error-message">{error}</div>;
 }
 
-export default function AddEmployeeForm({
-  employees,
-  setEmployees,
-  handleClose,
-  updateEmployee,
-  setUpdateEmployee,
-}) {
+export default function AddEmployeeForm() {
+  const dispatch = useDispatch();
+  const employee = useSelector((state) => state.modal.employee);
+  const employeeId = useSelector((state) => state.modal.updateEmployeeId);
+  const isUpdate = useSelector((state) => state.modal.update);
   const [tribes, setTribes] = useState([]);
 
   async function fetchData() {
@@ -33,39 +34,30 @@ export default function AddEmployeeForm({
 
   const formik = useFormik({
     initialValues: {
-      name: updateEmployee ? updateEmployee.name : "",
-      position: updateEmployee ? updateEmployee.title : "",
-      tribe: updateEmployee ? updateEmployee.tribe.id : "",
-      //startDate: "",
+      name: employee.name,
+      position: employee.position,
+      tribe: employee.tribe,
     },
     validateOnChange: false,
     validateOnBlur: true,
     validate: (values) => {
       const errors = {};
-      //const today = new Date();
-      //const startDate = new Date(values.startDate);
 
       if (!values.name) {
         errors.name = "Name of the employee is needed";
-      } else if (!values.name.match(/^[a-zA-Z\s]+$/)) {
+      } else if (values.name.match(/^[0-9\s]+$/)) {
         errors.name = "Name must consist only letters";
       }
 
       if (!values.position) {
         errors.position = "Enter position";
-      } else if (!values.position.match(/^[a-zA-Z\s]+$/)) {
+      } else if (values.position.match(/^[0-9\s]+$/)) {
         errors.position = "Position must consist only letters";
       }
 
       if (!values.tribe) {
         errors.tribe = "Please select tribe";
       }
-
-      /*if (!values.startDate) {
-        errors.startDate = "Enter the start date";
-      } else if (today < startDate) {
-        errors.startDate = "Start date cannot be in the future";
-      }*/
 
       return errors;
     },
@@ -75,14 +67,14 @@ export default function AddEmployeeForm({
           name: values.name.trim(),
           title: values.position.trim(),
           tribe_id: values.tribe,
-          //startDate: values.startDate,
         };
-        const response = await instance.post("/employees", newEmployeeDb);
-        const createdEmployee = response.data.createdEmployee;
-        setEmployees([...employees, createdEmployee]);
-        setUpdateEmployee(undefined);
+        if (isUpdate) {
+          dispatch(updateEmployeeId(employeeId, newEmployeeDb));
+        } else {
+          dispatch(addNewEmployee(newEmployeeDb));
+        }
         resetForm();
-        handleClose();
+        dispatch(closeModal());
       } catch (error) {
         console.error(error);
       }
@@ -134,27 +126,16 @@ export default function AddEmployeeForm({
             </Form.Select>
             <ValidationErrorMessage error={formik.errors.tribe} />
           </FloatingLabel>
-          {/**<FloatingLabel
-      controlId="floatingDate"
-      label="Start date"
-      className="mb-3"
-    >
-      <Form.Control
-        type="date"
-        max={currentDate}
-        name="startDate"
-        value={formik.values.startDate}
-        onChange={formik.handleChange}
-      />
-      <ValidationErrorMessage error={formik.errors.startDate} />
-        </FloatingLabel>*/}
         </FormGroup>
         <div className="row justify-content-around">
-          <Button className="table-button col-5" onClick={handleClose}>
+          <Button
+            className="table-button col-5"
+            onClick={() => dispatch(closeModal())}
+          >
             Close
           </Button>
           <Button className="add-employee-button col-5" type="sumbit">
-            Add
+            {isUpdate ? "Save" : "Add"}
           </Button>
         </div>
       </Form>

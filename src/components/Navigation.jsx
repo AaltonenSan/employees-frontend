@@ -2,20 +2,14 @@ import { Button } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../pipedrive-logo.svg";
+import { showModal } from "../store/actions/modal";
 
-export default function Navigation({
-  setShowEmployeeModal,
-  setUpdateEmployee,
-  updateEmployee,
-}) {
+export default function Navigation() {
   const location = useLocation();
-
-  function handleEmployeeClick() {
-    setUpdateEmployee(undefined);
-    setShowEmployeeModal(true);
-  }
+  const dispatch = useDispatch();
 
   return (
     <Navbar expand="md" className="bg-body-tertiary">
@@ -38,7 +32,7 @@ export default function Navigation({
           {location.pathname === "/" && (
             <Button
               className="add-employee-button"
-              onClick={handleEmployeeClick}
+              onClick={() => dispatch(showModal())}
             >
               + Employee
             </Button>
