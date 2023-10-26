@@ -49,21 +49,21 @@ tr:hover > td > .btn{
 }
 
 
-.delete-button {
+.table-button {
   background-color: #6861F2;
   outline: none;
   border: none;
 }
 
-.delete-button:active {
+.table-button:active {
   background-color: #6861F2 !important;
 }
 
-.delete-button:focus-visible {
+.table-button:focus-visible {
   background-color: #6861F2 !important;
 }
 
-.delete-button:hover {
+.table-button:hover {
   background-color: #3537a7;
 }
 

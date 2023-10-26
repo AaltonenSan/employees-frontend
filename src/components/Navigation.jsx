@@ -1,12 +1,21 @@
+import { Button } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../pipedrive-logo.svg";
-import AddEmployee from "./AddEmployee";
 
-export default function Navigation() {
+export default function Navigation({
+  setShowEmployeeModal,
+  setUpdateEmployee,
+  updateEmployee,
+}) {
   const location = useLocation();
+
+  function handleEmployeeClick() {
+    setUpdateEmployee(undefined);
+    setShowEmployeeModal(true);
+  }
 
   return (
     <Navbar expand="md" className="bg-body-tertiary">
@@ -24,9 +33,15 @@ export default function Navigation() {
               Tribes
             </Nav.Link>
           </Nav>
+
           {/* Only render Add Employee button on Employees site */}
           {location.pathname === "/" && (
-            <AddEmployee />
+            <Button
+              className="add-employee-button"
+              onClick={handleEmployeeClick}
+            >
+              + Employee
+            </Button>
           )}
         </Navbar.Collapse>
       </Container>
