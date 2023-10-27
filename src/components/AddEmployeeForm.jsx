@@ -1,11 +1,11 @@
 import { Formik, useFormik } from "formik";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FloatingLabel, FormGroup } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { instance } from "../index";
 import { addNewEmployee, updateEmployeeId } from "../store/actions/employees";
+import { fetchTribes } from "../store/actions/tribes";
 
 function ValidationErrorMessage({ error }) {
   return <div className="form-error-message">{error}</div>;
@@ -16,20 +16,11 @@ export default function AddEmployeeForm({ handleClose }) {
   const employee = useSelector((state) => state.modal.employee);
   const employeeId = useSelector((state) => state.modal.updateEmployeeId);
   const isUpdate = useSelector((state) => state.modal.update);
-  const [tribes, setTribes] = useState([]);
-
-  async function fetchData() {
-    try {
-      const response = await instance.get("/tribes");
-      setTribes(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const tribes = useSelector((state) => state.tribes.list);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    dispatch(fetchTribes());
+  }, [dispatch]);
 
   const formik = useFormik({
     initialValues: {

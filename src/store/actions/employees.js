@@ -9,7 +9,14 @@ import {
 } from "../slices/employeesSlice";
 
 export function fetchEmployees() {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    /* 
+      use redux store as cache and don't make api call if employees already exist
+      this would need extra logic to handle pagination
+    */
+    const { employees } = getState();
+    if (employees.list.length > 0) return;
+
     dispatch(loadEmployees());
 
     try {
