@@ -1,8 +1,8 @@
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import EmployeeTable from "./components/EmployeeTable";
 import Navigation from "./components/Navigation";
-import TribesTable from "./components/TribesTable";
+import Employees from "./pages/employees";
+import Tribes from "./pages/tribes";
 import store from "./store";
 
 function App() {
@@ -11,8 +11,8 @@ function App() {
       <BrowserRouter>
         <Navigation />
         <Routes>
-          <Route path="/" element={<EmployeeTable />} />
-          <Route path="/tribes" element={<TribesTable />} />
+          <Route path="/" element={<Employees />} />
+          <Route path="/tribes" element={<Tribes />} />
         </Routes>
       </BrowserRouter>
     </Provider>

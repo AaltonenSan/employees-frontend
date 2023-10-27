@@ -1,14 +1,15 @@
 import Modal from "react-bootstrap/Modal";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { closeModal } from "../store/actions/modal";
 import AddEmployeeForm from "./AddEmployeeForm";
 
-export default function AddEmployeeModal() {
+export default function AddEmployeeModal({ show }) {
   const dispatch = useDispatch();
-  const show = useSelector((state) => state.modal.show);
+  const handleClose = () => dispatch(closeModal());
+
   return (
-    <Modal show={show} onHide={() => dispatch(closeModal())}>
-      <AddEmployeeForm />
+    <Modal show={show} onHide={handleClose}>
+      <AddEmployeeForm handleClose={handleClose} />
     </Modal>
   );
 }

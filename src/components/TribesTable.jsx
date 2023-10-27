@@ -1,30 +1,9 @@
-import { useEffect, useState } from 'react';
 import Container from "react-bootstrap/Container";
-import Row from 'react-bootstrap/Row';
-import Spinner from 'react-bootstrap/Spinner';
+import Row from "react-bootstrap/Row";
+import Spinner from "react-bootstrap/Spinner";
 import Table from "react-bootstrap/Table";
-import { instance } from "../index";
 
-export default function TribesTable() {
-  const [tribes, setTribes] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  async function fetchData() {
-    setIsLoading(true);
-    try {
-      const response = await instance.get('/tribes')
-      setTribes(response.data);
-    } catch (error) {
-        console.error(error)
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    fetchData();
-  },[]);
-
+export default function TribesTable({ tribes, isLoading, error }) {
   return (
     <Container className="mt-3">
       <Table hover>
@@ -36,14 +15,14 @@ export default function TribesTable() {
           </tr>
         </thead>
         <tbody>
-          {!isLoading && 
-          tribes.map((tribe) => (
-            <tr key={tribe.id}>
-              <td>{tribe.id}</td>
-              <td>{tribe.name}</td>
-              <td>{tribe.department}</td>
-            </tr>
-          ))}
+          {!isLoading &&
+            tribes.map((tribe) => (
+              <tr key={tribe.id}>
+                <td>{tribe.id}</td>
+                <td>{tribe.name}</td>
+                <td>{tribe.department}</td>
+              </tr>
+            ))}
         </tbody>
       </Table>
       {isLoading && (
@@ -51,8 +30,11 @@ export default function TribesTable() {
           <Spinner />
         </Row>
       )}
+      {error && (
+        <p style={{ textAlign: "center", color: "red" }}>
+          There was an error loading the tribes data
+        </p>
+      )}
     </Container>
   );
 }
-
-

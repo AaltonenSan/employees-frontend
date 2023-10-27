@@ -1,22 +1,14 @@
-import { useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Spinner from "react-bootstrap/Spinner";
 import Table from "react-bootstrap/Table";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteEmployeeId, fetchEmployees } from "../store/actions/employees";
+import { useDispatch } from "react-redux";
+import { deleteEmployeeId } from "../store/actions/employees";
 import { showModalUpdate } from "../store/actions/modal";
-import AddEmployeeModal from "./AddEmployeeModal";
 
-export default function EmployeeTable() {
+export default function EmployeeTable({ employees, isLoading, errorLoading }) {
   const dispatch = useDispatch();
-  const employees = useSelector((state) => state.employees.list);
-  const isLoading = useSelector((state) => state.employees.loading);
-
-  useEffect(() => {
-    dispatch(fetchEmployees());
-  }, [dispatch]);
 
   return (
     <Container className="mt-3">
@@ -66,7 +58,11 @@ export default function EmployeeTable() {
           <Spinner />
         </Row>
       )}
-      <AddEmployeeModal />
+      {errorLoading && (
+        <p style={{ textAlign: "center", color: "red" }}>
+          There was an error loading the employees data
+        </p>
+      )}
     </Container>
   );
 }

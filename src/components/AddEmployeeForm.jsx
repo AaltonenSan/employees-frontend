@@ -6,13 +6,12 @@ import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
 import { instance } from "../index";
 import { addNewEmployee, updateEmployeeId } from "../store/actions/employees";
-import { closeModal } from "../store/actions/modal";
 
 function ValidationErrorMessage({ error }) {
   return <div className="form-error-message">{error}</div>;
 }
 
-export default function AddEmployeeForm() {
+export default function AddEmployeeForm({ handleClose }) {
   const dispatch = useDispatch();
   const employee = useSelector((state) => state.modal.employee);
   const employeeId = useSelector((state) => state.modal.updateEmployeeId);
@@ -74,7 +73,7 @@ export default function AddEmployeeForm() {
           dispatch(addNewEmployee(newEmployeeDb));
         }
         resetForm();
-        dispatch(closeModal());
+        handleClose();
       } catch (error) {
         console.error(error);
       }
@@ -128,10 +127,7 @@ export default function AddEmployeeForm() {
           </FloatingLabel>
         </FormGroup>
         <div className="row justify-content-around">
-          <Button
-            className="table-button col-5"
-            onClick={() => dispatch(closeModal())}
-          >
+          <Button className="table-button col-5" onClick={handleClose}>
             Close
           </Button>
           <Button className="add-employee-button col-5" type="sumbit">
